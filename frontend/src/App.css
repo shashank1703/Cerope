@@ -1,0 +1,22 @@
+/* Wrapper for whole app */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9fafb; /* gray-50 */
+}
+
+/* Main content area */
+.app-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+/* Footer styles */
+.app-footer {
+  text-align: center;
+  padding: 1rem;
+  color: #6b7280; /* gray-500 */
+  font-size: 0.875rem;
+  border-top: 1px solid #e5e7eb; /* gray-200 */
+}
