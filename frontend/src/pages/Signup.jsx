@@ -18,9 +18,44 @@ export default function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add validation / API call here
+
+    // Frontend validation
+    if (!form.terms) {
+      alert("You must agree to the terms.");
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/user/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: form.name,
+          email: form.email,
+          password: form.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.msg || "Signup failed");
+      } else {
+        alert("Signup successful!");
+        console.log(data);
+        // Optionally redirect to login page
+        // router.push("/login");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
+    }
   };
 
   return (
@@ -29,17 +64,13 @@ export default function Signup() {
 
       <main className="flex flex-1 items-center justify-center px-4 py-8">
         <div className="flex flex-col md:flex-row w-full max-w-5xl gap-6">
-          
-          {/* Left Column - Form with bg.png */}
+          {/* Left Column - Form */}
           <div className="order-2 md:order-1 w-full md:w-1/2 relative rounded-3xl overflow-hidden flex flex-col justify-center p-6 sm:p-10">
-            
-            {/* Background clipped to rounded edges */}
             <div
               className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
               style={{ backgroundImage: "url('/bg.png')" }}
             ></div>
 
-            {/* Foreground Form */}
             <div className="relative z-10 bg-white md:bg-transparent rounded-3xl p-6 sm:p-8 shadow-lg md:shadow-none">
               <h2 className="text-2xl font-bold mb-6 text-black">
                 Set up Your Cerope Account
