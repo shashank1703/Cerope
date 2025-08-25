@@ -16,6 +16,42 @@ const UserSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  firstName: { 
+    type: String, 
+    default: '' 
+  },
+  lastName: { 
+    type: String, 
+    default: '' 
+  },
+  dob: { 
+    type: Date, 
+  },
+  stylePreference: { 
+    type: String, 
+    enum: ['Men', 'Women', 'Both'], // Ensures only these values are accepted 
+  },
+  phoneNumber: { 
+    type: String, 
+    default: '' 
+  },
+  country: { 
+    type: String, 
+    default: '' 
+  },
+  city: { 
+    type: String, 
+    default: '' 
+  },
+  profilePicture: { 
+    type: String, // We will store the URL to the image 
+    default: '' 
+  },
+  // Add a flag to track setup completion 
+  profileSetupCompleted: { 
+    type: Boolean, 
+    default: false 
+  }
 });
 
 

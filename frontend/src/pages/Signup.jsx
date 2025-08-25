@@ -33,7 +33,7 @@ export default function Signup() {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/user/signup", {
+      const res = await fetch("/api/users/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -50,8 +50,16 @@ export default function Signup() {
       } else {
         alert("Signup successful!");
         console.log(data);
-        // NEW: first-time users go to profile setup
+        
+        // Store the token from the response
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+        
+        // Set profile as not completed
         localStorage.setItem("profileCompleted", "false");
+        
+        // Redirect to profile setup
         window.location.replace("/profile-setup");
       }
     } catch (err) {
@@ -138,7 +146,7 @@ export default function Signup() {
               <p className="text-center text-sm text-gray-700 mt-4">
                 Already a member?{" "}
                 <a href="/login" className="text-blue-600 hover:underline">
-                  Sign in
+                  Login
                 </a>
               </p>
             </div>

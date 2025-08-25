@@ -29,7 +29,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/user/login", {
+      const res = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -54,8 +54,18 @@ export default function Login() {
       // const completed = localStorage.getItem("profileCompleted") === "true";
       // navigate(completed ? "/dashboard" : "/profile-setup", { replace: true });
       localStorage.setItem("token", token);
-      localStorage.setItem("profileCompleted", "false");
-      navigate("/profile-setup", { replace: true });
+
+      // 2. Get the completion status from the server's response
+      const isProfileComplete = data.user.profileSetupCompleted;
+
+      // 3. Navigate based on the status
+      if (isProfileComplete) {
+        // If true, go to the main dashboard
+        navigate("/profile"); 
+      } else {
+        // If false, go to the setup page
+        navigate("/profile-setup");
+      }
 
 
     } catch (err) {
@@ -148,7 +158,7 @@ export default function Login() {
 
               <p className="signup">
                 Don’t have an account?{" "}
-                <a href="#" className="link">
+                <a href="/signup" className="link">
                   Sign up
                 </a>
               </p>

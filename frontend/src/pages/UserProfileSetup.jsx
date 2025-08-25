@@ -48,32 +48,47 @@ export default function UserProfileSetup() {
     e.preventDefault();
     if (!validate()) return;
 
-    const payload = {
+    const userData = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       dob,
       stylePreference,
-      phone: phone.trim(),
+      phoneNumber: phone.trim(), // Changed to match schema
       country: country.trim(),
       city,
-      hasProfilePic: !!profilePictureFile,
+      hasProfilePic: !!profilePictureFile
     };
 
-    console.log("Profile Setup Payload:", payload);
+    console.log("Profile Setup Payload:", userData);
 
     try {
-      // Placeholder API call (replace URL when backend is ready)
-      await axios.post("/api/v1/users/update-profile", payload, {
-        headers: { "Content-Type": "application/json" },
+      // Get token from localStorage
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error("No authentication token found");
+        navigate('/login');
+        return;
+      }
+
+      // Send data to backend - fix the endpoint URL
+      const response = await axios.put("/api/users/profile", userData, {
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
       });
-      // Mark profile as complete locally and route to dashboard
+      
+      console.log("Profile updated successfully:", response.data);
+      
+      // Mark profile as complete locally
       localStorage.setItem("profileCompleted", "true");
-      navigate("/dashboard", { replace: true });
+      
+      // Redirect to user dashboard instead of login page
+      navigate('/profile', { replace: true });
     } catch (err) {
       console.error("Profile update failed:", err?.response?.data || err.message);
       // You can display a toast/error banner here if needed
-      localStorage.setItem("profileCompleted", "true");
-      navigate("/dashboard", { replace: true });
+      alert("Failed to update profile. Please try again.");
     }
   };
 
