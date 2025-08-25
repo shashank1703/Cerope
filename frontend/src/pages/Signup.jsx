@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import { useState } from "react";
+import Footer from "../components/Footer";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -49,8 +50,9 @@ export default function Signup() {
       } else {
         alert("Signup successful!");
         console.log(data);
-        // Optionally redirect to login page
-        // router.push("/login");
+        // NEW: first-time users go to profile setup
+        localStorage.setItem("profileCompleted", "false");
+        window.location.replace("/profile-setup");
       }
     } catch (err) {
       console.error(err);
@@ -157,6 +159,8 @@ export default function Signup() {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

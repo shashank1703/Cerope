@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+// const cors = require("cors");
+
 const cors = require("cors");
 
 // ✅ Allow requests from frontend
@@ -17,7 +19,7 @@ app.use(bodyParser.json());
 const userRouter = require("./routes/user");
 
 // Middleware for parsing request bodies
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 // app.use("/admin", adminRouter)
 app.use("/user", userRouter)
 

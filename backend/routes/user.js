@@ -33,5 +33,38 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+// Login route
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate
+    if (!email || !password) {
+      return res.status(400).json({ msg: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: "User not found" });
+    }
+
+    // NOTE: if you hashed passwords, compare with bcrypt here
+    if (user.password !== password) {
+      return res.status(400).json({ msg: "Incorrect password" });
+    }
+
+    // Create JWT
+    const token = require("jsonwebtoken").sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.json({ token, user: { id: user._id, username: user.username, email } });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
 
 module.exports = router;

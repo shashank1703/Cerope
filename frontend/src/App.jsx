@@ -1,12 +1,20 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
-import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import UserProfileSetup from "./pages/UserProfileSetup";  // ✅ add this
+
 function App() {
   return (
     <Router>
       <Routes>
         {/* Signup Page */}
         <Route path="/signup" element={<Signup />} />
+
+        {/* Login Page */}
+        <Route path="/login" element={<Login />} />
+
+        {/* User Profile Setup */}
+        <Route path="/profile-setup" element={<UserProfileSetup />} />
 
         {/* Default Redirect to Signup */}
         <Route path="*" element={<Navigate to="/signup" replace />} />
