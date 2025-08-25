@@ -1,28 +1,15 @@
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import authRoutes from "./routes/auth.js";
-
-dotenv.config();
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const PORT = process.env.PORT || 5000;
+// const adminRouter = require("./routes/admin")
+const userRouter = require("./routes/user");
 
-// Middleware
-app.use(express.json());
+// Middleware for parsing request bodies
+app.use(bodyParser.json());
+// app.use("/admin", adminRouter)
+app.use("/user", userRouter)
 
-// Routes
-app.use("/api/auth", authRoutes);
-
-// app.get("/", (req, res) => {
-//   res.send("Server is alive 🚀");
-// });
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log("MongoDB connected");
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-})
-.catch((err) => console.error("MongoDB connection error:", err));
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
